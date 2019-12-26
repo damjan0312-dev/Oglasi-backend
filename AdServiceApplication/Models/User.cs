@@ -14,7 +14,7 @@ namespace AdServiceApplication.Models
         public string password;
 
         public User() { }
-        public User(int id, string name, string lastName, string email, string password)
+        public User(string id, string name, string lastName, string email, string password)
         {
             this.id = id;
             this.name = name;

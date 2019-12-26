@@ -11,13 +11,16 @@ namespace AdServiceApplication.Controllers
 {
     public class AdController : ApiController
     {
+        //[System.Web.Http.Route("api/ad/get")]
         public IEnumerable<Ad> Get()
         {
-
-            Ad newAd = new Ad("1","ker","ker dobar","slika","kutre","61","Pariz",100);
-            AdService.AddAd(newAd);
-
             return AdService.GetAds();
+        }
+
+        [System.Web.Http.Route("api/ad/add")]
+        public void AddAd([FromBody] Ad newAd)
+        {
+            AdService.AddAd(newAd);
         }
     }
 }

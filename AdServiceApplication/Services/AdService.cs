@@ -20,7 +20,7 @@ namespace AdServiceApplication.Services
             }
 
             RowSet adData = session.Execute("Insert into \"ads\" (\"id\",headline,description,picture,category,contact,city,price)"+
-                " values("+newAd.id+",'"+newAd.headline+ "','"+newAd.description+ "','"+newAd.picture+ "','"+newAd.category+ "','"+newAd.contact+ "','"+newAd.city+ "',"+newAd.price+")  ");
+                " values(now(),'"+newAd.headline+ "','"+newAd.description+ "','"+newAd.picture+ "','"+newAd.category+ "','"+newAd.contact+ "','"+newAd.city+ "',"+newAd.price+")  ");
             return true;
         }
         public static bool DeleteAd(string adID)

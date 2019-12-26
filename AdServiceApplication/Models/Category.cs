@@ -12,7 +12,7 @@ namespace AdServiceApplication.Models
         public string picture;
 
         public Category() { }
-        public Category(int id, string name, string picture)
+        public Category(string id, string name, string picture)
         {
             this.id = id;
             this.name = name;
