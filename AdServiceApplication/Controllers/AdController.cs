@@ -18,9 +18,9 @@ namespace AdServiceApplication.Controllers
         }
 
         [System.Web.Http.Route("api/ad/add")]
-        public void AddAd([FromBody] Ad newAd)
+        public string AddAd([FromBody] Ad newAd)
         {
-            AdService.AddAd(newAd);
+            return AdService.AddAd(newAd);
         }
     }
 }

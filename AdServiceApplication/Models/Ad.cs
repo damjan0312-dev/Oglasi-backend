@@ -15,6 +15,7 @@ namespace AdServiceApplication.Models
         public string contact { get; set; }
         public string city { get; set; }
         public decimal price { get; set; }
+        public string userId { get; set; }
 
         public Ad()
         {

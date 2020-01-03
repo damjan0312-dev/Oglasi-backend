@@ -10,18 +10,29 @@ namespace AdServiceApplication.Services
 {
     public class AdService
     {
-        public static bool AddAd(Ad newAd)
+        public static string AddAd(Ad newAd)
         {
             ISession session = SessionManager.GetSession();
 
             if (session == null)
             {
-                return false;
+                return string.Empty;
             }
+            try
+            {
+                RowSet adData = session.Execute("Insert into \"ads_by_category\" (\"id\",headline,description,picture,category,contact,city,price,userid)" +
+                    " values(now(),'" + newAd.headline + "','" + newAd.description + "','" + newAd.picture + "','" + newAd.category + "','" + newAd.contact + "','" + newAd.city + "'," + newAd.price + "," + newAd.userId + ")  ");
 
-            RowSet adData = session.Execute("Insert into \"ads\" (\"id\",headline,description,picture,category,contact,city,price)"+
-                " values(now(),'"+newAd.headline+ "','"+newAd.description+ "','"+newAd.picture+ "','"+newAd.category+ "','"+newAd.contact+ "','"+newAd.city+ "',"+newAd.price+")  ");
-            return true;
+                adData = session.Execute("select id from ads_by_category where category='" + newAd.category + "' ORDER BY id DESC LIMIT 1");
+
+                var ad = adData.GetRows().First();
+
+                return ad["id"].ToString();
+            }
+            catch(Exception ex)
+            {
+                return string.Empty;
+            }
         }
         public static bool DeleteAd(string adID)
         {
@@ -32,7 +43,7 @@ namespace AdServiceApplication.Services
                 return false;
             }
 
-            RowSet adData = session.Execute("delete from \"ads\" where \"id\" = '" + adID + "'");
+            RowSet adData = session.Execute("delete from \"ads_by_category\" where \"id\" = '" + adID + "'");
             return true;
 
         }
@@ -45,7 +56,7 @@ namespace AdServiceApplication.Services
                 return false;
             }
 
-            RowSet adData = session.Execute("update ads set headline='" + editAd.headline + "',"+
+            RowSet adData = session.Execute("update ads_by_category set headline='" + editAd.headline + "'," +
                 "description='" + editAd.description + "', " +
                 "picture='" + editAd.picture + "'," +
                 "category='" + editAd.category + "'," +
@@ -70,7 +81,7 @@ namespace AdServiceApplication.Services
                 return null;
             }
 
-            var adData = session.Execute("Select * From \"ads\"");
+            var adData = session.Execute("Select * From \"ads_by_category\"");
 
             foreach(var ad in adData)
             {
@@ -83,6 +94,7 @@ namespace AdServiceApplication.Services
                 newAd.contact = ad["contact"] != null ? ad["contact"].ToString() : string.Empty;
                 newAd.city = ad["city"] != null ? ad["city"].ToString() : string.Empty;
                 newAd.price = ad["price"] != null ? Convert.ToDecimal( ad["price"].ToString()) : -1;
+                newAd.userId = ad["userid"] != null ? ad["userid"].ToString() : string.Empty;
 
                 ads.Add(newAd);
             }

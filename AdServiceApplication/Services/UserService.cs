@@ -20,9 +20,13 @@ namespace AdServiceApplication.Services
                 return false;
             }
 
-            RowSet adData = session.Execute("Insert into \"user\" (\"id\",name, lastname, email, password)" +
-                " values(now(),'" + user.name + "','" + user.lastName + "','" + user.email + "','" + user.password + "'");
-            return true;
+            RowSet adData = session.Execute("Insert into \"user\" (\"email\", id ,name, lastname, password)" +
+                " values('" + user.email + "', now(),'" + user.name + "','" + user.lastName + "','" + user.password + "')");
+
+            if (adData.Count() > 0)
+                return true;
+            else
+                return true;
         }
 
         public static User AuthUser(string email)
@@ -34,13 +38,13 @@ namespace AdServiceApplication.Services
                 return null;
             }
 
-            var adData = session.Execute("select * from user where email='" + email + "'");
+            var adData = session.Execute("select * from user_by_email where email='" + email + "'");
 
-            var u = adData.First();
+             
             User user = new User();
-            if (u != null)
+
+            foreach (var u in adData)
             {
-               
                 user.id = u["id"] != null ? u["id"].ToString() : string.Empty;
                 user.name = u["name"] != null ? u["name"].ToString() : string.Empty;
                 user.lastName = u["lastname"] != null ? u["lastname"].ToString() : string.Empty;
@@ -49,10 +53,38 @@ namespace AdServiceApplication.Services
 
                 return user;
             }
+            return null; 
 
-            return null;
+       
             
 
+        }
+
+        public static User Login(string email, string password)
+        {
+            ISession session = SessionManager.GetSession();
+
+            if (session == null)
+            {
+                return null;
+            }
+
+            var adData = session.Execute("select * from user where email='" + email + "' AND password='"+ password+"'");
+
+
+            User user = new User();
+
+            foreach (var u in adData)
+            {
+                user.id = u["id"] != null ? u["id"].ToString() : string.Empty;
+                user.name = u["name"] != null ? u["name"].ToString() : string.Empty;
+                user.lastName = u["lastname"] != null ? u["lastname"].ToString() : string.Empty;
+                user.email = u["email"] != null ? u["email"].ToString() : string.Empty;
+                user.password = u["password"] != null ? u["password"].ToString() : string.Empty;
+
+                return user;
+            }
+            return null; 
         }
     }
 }

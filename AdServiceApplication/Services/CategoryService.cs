@@ -21,7 +21,7 @@ namespace AdServiceApplication.Services
                 return null;
             }
 
-            var categoryData = session.Execute("Select * From \"category\"");
+            var categoryData = session.Execute("Select * From \"category_by_name\"");
 
             foreach (var category in categoryData)
             {

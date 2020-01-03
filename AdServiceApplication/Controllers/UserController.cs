@@ -12,23 +12,20 @@ namespace AdServiceApplication.Controllers
     public class UserController : ApiController
     {
         [System.Web.Http.Route("api/user/add")]
-        public void AddUser([FromBody] User newUser)
+        public void addUser([FromBody] User newUser)
         {
             UserService.AddUser(newUser);
         }
 
-     // [System.Web.Http.Route("api/auth")]
-        public User AuthUser([FromUri]string email)
-        {
-            UserService.AuthUser(email);
 
-            return null; 
-        }
-
-
-      public User getUsers(string email)
+      public User getUser(string email)
       {
           return UserService.AuthUser(email);
+      }
+
+      //[System.Web.Http.Route("api/user/login")]
+      public User login([FromBody] User u){
+          return UserService.Login(u.email, u.password);
       }
     }
 }
