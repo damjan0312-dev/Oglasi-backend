@@ -22,5 +22,19 @@ namespace AdServiceApplication.Controllers
         {
             return AdService.AddAd(newAd);
         }
+
+        [System.Web.Http.Route("api/ad/delete")]
+        public bool DeleteAd(string id, string category)
+        {
+            return AdService.DeleteAd(id, category);
+        }
+
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.Route("api/ad/search")]
+        public IEnumerable<Ad> SearchAd(string category, string city, string priceFrom, string priceTo)
+        {
+            return AdService.SearchAds(category, city, priceFrom, priceTo);
+        }
     }
 }
